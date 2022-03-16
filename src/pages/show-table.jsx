@@ -3,32 +3,16 @@ import Axios from 'axios'
 import { 
     Box, 
     Table, 
-    Tbody, 
-    Td, 
+    Tbody,
     Th, 
     Thead, 
-    Tr, 
-    CircularProgress, 
-    Flex,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalBody,
-    Text,
-    Menu, 
-    MenuButton,
-    MenuList,
-    MenuItem,
-    IconButton,
-    AlertDialog,
-    AlertDialogOverlay,
-    AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogBody,
-    AlertDialogFooter,
-    Button
+    Tr
 } from '@chakra-ui/react'
-import { MdOutlineMoreVert, MdEdit, MdDelete } from 'react-icons/md'
+
+// components
+import Loading from '../components/loading'
+import Confirmation from '../components/confirmation'
+import RowStudent, { RowStudentEdited } from './sub-components/row-students'
 
 function ShowTable () {
     const [students, setStudent] = useState([])
@@ -51,27 +35,26 @@ function ShowTable () {
         })
     }, [])
 
-
     const generateStudentRows = () => {
         return students.map((student, index) => {
-            return (
-                <Tr key={student.id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{student.name}</Td>
-                    <Td>{student.email}</Td>
-                    <Td>{student.program}</Td>
-                    <Td>{student.country}</Td>
-                    <Td>
-                        <Menu>
-                            <MenuButton as={IconButton} icon={<MdOutlineMoreVert />}/>
-                            <MenuList>
-                                <MenuItem icon={<MdEdit/>}>Edit</MenuItem>
-                                <MenuItem icon={<MdDelete/>} onClick={() => onButtonDelete(student.id)}>Delete</MenuItem>
-                            </MenuList>
-                        </Menu>
-                    </Td>
-                </Tr>
-            )
+            if (student.id === id) {
+                return (
+                    <RowStudentEdited 
+                        student={student}
+                        onCancel={onButtonCancelEdit}
+                    />
+                )
+            } else {
+                return (
+                    <RowStudent
+                        key={student.id}
+                        student={student}
+                        index={index}
+                        onDelete={() => onButtonDelete(student.id)}
+                        onEdit={() => onButtonEdit(student.id)}
+                    />
+                )
+            }
         })
     }
 
@@ -81,7 +64,7 @@ function ShowTable () {
         setId(id)
     }
 
-    const onButtonCancelClick = () => {
+    const onButtonCancelDelete = () => {
         setConfirm(false)
         setId(null)
     }
@@ -108,43 +91,18 @@ function ShowTable () {
         })
     }
 
+    const onButtonEdit = (id) => {
+        setId(id)
+    }
+
+    const onButtonCancelEdit = () => {
+        setId(null)
+    }
+
     return (
         <Box px={161} py={35} w="100%" h="auto">
-            <Modal isOpen={loading}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalBody>
-                        <Flex w="100%" h="16" justifyContent="center" alignItems="center">
-                            <CircularProgress isIndeterminate color='#319795' /> 
-                            <Text fontSize="2xl" pl="10px" fontWeight="bold" color='#319795'>Loading . . .</Text>
-                        </Flex> 
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-            <AlertDialog
-                isOpen={confirm}
-            >
-                <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Delete Confirmation
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                            Are you sure? You can't undo this action afterwards.
-                        </AlertDialogBody>
-
-                        <AlertDialogFooter>
-                            <Button onClick={onButtonCancelClick}>
-                                Cancel
-                            </Button>
-                            <Button colorScheme='red' ml={3} onClick={onButtonConfirmDelete}>
-                                Delete
-                            </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog>
+            <Loading isLoading={loading}/>
+            <Confirmation isConfirm={confirm} title="Confirmation" onCancel={onButtonCancelDelete} onConfirm={onButtonConfirmDelete}/>
             <Table variant="simple" backgroundColor={"white"}>
                 <Thead>
                     <Tr>

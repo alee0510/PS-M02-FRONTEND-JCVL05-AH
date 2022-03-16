@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Flex, InputGroup, InputLeftElement, Input, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react'
 import { SearchIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { MdFilterList } from 'react-icons/md'
 
 function Controller () {
     return (
@@ -19,12 +20,14 @@ function Controller () {
                         <Input type='tel' placeholder='Search' />
                     </InputGroup>
                     <Menu>
-                        <MenuButton minW="150px" backgroundColor="#f9f9f9" as={Button} rightIcon={<HamburgerIcon />}>
+                        <MenuButton minW="150px" backgroundColor="#f9f9f9" as={Button} rightIcon={<MdFilterList />}>
                             Sort By
                         </MenuButton>
                         <MenuList>
-                            <MenuItem>Program</MenuItem>
-                            <MenuItem>Country</MenuItem>
+                            <MenuItem>Program a-Z</MenuItem>
+                            <MenuItem>Program Z-a</MenuItem>
+                            <MenuItem>Country a-Z</MenuItem>
+                            <MenuItem>Country Z-a</MenuItem>
                         </MenuList>
                     </Menu>
                 </Flex>
