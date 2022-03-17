@@ -24,39 +24,49 @@ export default function RowStudent ({ student, index, onDelete, onEdit }) {
     )
 }
 
-export function RowStudentEdited ({ student, onCancel }) {
+export function RowStudentEdited ({ 
+    student, 
+    onCancel, 
+    onSave, 
+    nameRef,
+    emailRef, 
+    onProgramMenuClick, 
+    programTitle, 
+    countryTitle,
+    onCountryMenuClick 
+}) {
     return (
         <Tr>
             <Td>#</Td>
             <Td>
-                <Input type="text" defaultValue={student.name}/>
+                <Input ref={nameRef} type="text" defaultValue={student.name}/>
             </Td>
             <Td>
-                <Input type="email" defaultValue={student.email}/>
+                <Input ref={emailRef} type="email" defaultValue={student.email}/>
             </Td>
             <Td>
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Programs
+                        { programTitle }
                     </MenuButton>
                     <MenuList>
-                        <MenuItem>Fullstack Web Development</MenuItem>
-                        <MenuItem>Data Science</MenuItem>
-                        <MenuItem>UI/UX Designer</MenuItem>
-                        <MenuItem>Digital Marketing</MenuItem>
+                        <MenuItem value="Fullstack Web Development" onClick={onProgramMenuClick}>Fullstack Web Development</MenuItem>
+                        <MenuItem value="Data Science" onClick={onProgramMenuClick}>Data Science</MenuItem>
+                        <MenuItem value="UI/UX Designer" onClick={onProgramMenuClick}>UI/UX Designer</MenuItem>
+                        <MenuItem value="Digital Marketing" onClick={onProgramMenuClick}>Digital Marketing</MenuItem>
                     </MenuList>
                 </Menu>
             </Td>
             <Td>
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Countries
+                        { countryTitle }
                     </MenuButton>
                     <MenuList>
-                        <MenuItem>Japan</MenuItem>
-                        <MenuItem>Korea</MenuItem>
-                        <MenuItem>USA</MenuItem>
-                        <MenuItem>Rusia</MenuItem>
+                        <MenuItem value="Japan" onClick={onCountryMenuClick}>Japan</MenuItem>
+                        <MenuItem value="Korea" onClick={onCountryMenuClick}>Korea</MenuItem>
+                        <MenuItem value="USA" onClick={onCountryMenuClick}>USA</MenuItem>
+                        <MenuItem value="Rusia" onClick={onCountryMenuClick}>Rusia</MenuItem>
                     </MenuList>
                 </Menu>
             </Td>
@@ -64,6 +74,7 @@ export function RowStudentEdited ({ student, onCancel }) {
                 <IconButton
                     colorScheme='green'
                     icon={<CheckIcon />}
+                    onClick={onSave}
                 />
                 <IconButton
                     onClick={onCancel}

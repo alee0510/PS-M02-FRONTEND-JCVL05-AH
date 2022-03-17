@@ -1,39 +1,32 @@
 {
   "users": [
     {
-      "id" : 1, 
-      "name" : "Lia Kim",
-      "email" : "lia.kim@gmail.co.kr",
-      "program" : "UI/UX Designer",
-      "country" : "Korea"
+      "id": 1,
+      "name": "Lia Kim",
+      "email": "lia.kim@gmail.co.kr",
+      "program": "Data Science",
+      "country": "Rusia"
     },
     {
-      "id" : 2, 
-      "name" : "Beidu Chao",
-      "email" : "beido.chao@gmail.com",
-      "program" : "Fullstack Web Development",
-      "country" : "Japan"
+      "id": 2,
+      "name": "Beidu Chao",
+      "email": "beido.chao@gmail.co.jp",
+      "program": "Digital Marketing",
+      "country": "Japan"
     },
     {
-      "id" : 3, 
-      "name" : "Seigou",
-      "email" : "Seigou@gmail.co.kr",
-      "program" : "UI/UX Designer",
-      "country" : "Thailand"
+      "id": 3,
+      "name": "Seigou",
+      "email": "Seigou@gmail.co.kr",
+      "program": "Data Science",
+      "country": "Korea"
     },
     {
-      "id" : 4, 
-      "name" : "Steven Lee",
-      "email" : "lee.steven@gmail.co.kr",
-      "program" : "Data Science",
-      "country" : "USA"
-    },
-    {
-      "id" : 5, 
-      "name" : "Tiara L.",
-      "email" : "tiara_l@gmail.co.kr",
-      "program" : "Digital Marketing",
-      "country" : "Indonesia"
+      "id": 5,
+      "name": "Tiara Lauren",
+      "email": "tiara_l@gmail.com",
+      "program": "Fullstack Web Development",
+      "country": "USA"
     }
   ]
 }
