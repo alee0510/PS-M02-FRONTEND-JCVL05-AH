@@ -27,6 +27,48 @@
       "email": "tiara_l@gmail.com",
       "program": "Fullstack Web Development",
       "country": "USA"
+    },
+    {
+      "name": "Firas San",
+      "email": "san.firas@gmail.com",
+      "program": "Data Science",
+      "country": "Rusia",
+      "id": 6
+    },
+    {
+      "name": "kaliber",
+      "email": "kaliber@gmail.com",
+      "program": "Digital Marketing",
+      "country": "Korea",
+      "id": 7
+    },
+    {
+      "name": "hemo",
+      "email": "hemo@gmail.com",
+      "program": "UI/UX Designer",
+      "country": "Korea",
+      "id": 8
+    },
+    {
+      "name": "Klee",
+      "email": "klee@gmail.com",
+      "program": "Data Science",
+      "country": "Japan",
+      "id": 9
+    },
+    {
+      "name": "jean",
+      "email": "jean.dan@gmail.com",
+      "program": "Digital Marketing",
+      "country": "USA",
+      "id": 10
+    },
+    {
+      "name": "Rudheus",
+      "email": "rude.us@gmail.com",
+      "program": "Data Science",
+      "country": "USA",
+      "id": 11
     }
   ]
 }
