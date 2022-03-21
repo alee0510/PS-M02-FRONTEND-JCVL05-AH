@@ -6,8 +6,12 @@ import {
     Tbody,
     Th, 
     Thead, 
-    Tr
+    Tr,
+    IconButton,
+    Flex,
+    Text
 } from '@chakra-ui/react'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
 // components
 import Loading from '../components/loading'
@@ -21,6 +25,7 @@ function ShowTable () {
     const [editConfirm, setEditConfirm] = useState(false)
     const [id, setId] = useState(null)
     const [editId, setEditId] = useState(null)
+    const [page, setPage] = useState(1)
 
     // edited state
     const inputNameRef = useRef('')
@@ -44,7 +49,8 @@ function ShowTable () {
     }, [])
 
     const generateStudentRows = () => {
-        return students.map((student, index) => {
+        let data = [...students]
+        return data.splice(5 * (page - 1), 5).map((student, index) => {
             if (student.id === editId) {
                 return (
                     <RowStudentEdited
@@ -155,6 +161,13 @@ function ShowTable () {
         })
     }
 
+    const onButtonPrev = () => {
+        if (page <= 1) return
+
+        setPage((prev) => prev - 1)
+    }
+    const onButtonNext = () => setPage((prev) => prev + 1)
+
     return (
         <Box px={161} py={35} w="100%" h="auto">
             <Loading isLoading={loading}/>
@@ -170,7 +183,7 @@ function ShowTable () {
                 onCancel={onButtonCancelEdit}
                 onConfirm={onButtonConfirmEdit}
             />
-            <Table variant="simple" backgroundColor={"white"}>
+            <Table variant="simple" minH="400px" backgroundColor={"white"}>
                 <Thead>
                     <Tr>
                         <Th>No</Th>
@@ -185,6 +198,17 @@ function ShowTable () {
                     { generateStudentRows() }
                 </Tbody>
             </Table>
+            <Flex backgroundColor="white" px="25px" alignItems="center" justifyContent="flex-end" w="100%" h="50px">
+                <IconButton
+                    icon={<ChevronLeftIcon />}
+                    onClick={onButtonPrev}
+                />
+                <Text fontSize="16px" mx="15px">{page}</Text>
+                <IconButton
+                    icon={<ChevronRightIcon />}
+                    onClick={onButtonNext}
+                />
+            </Flex>
         </Box>
     )
 }
