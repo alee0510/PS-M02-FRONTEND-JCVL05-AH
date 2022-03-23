@@ -38,7 +38,7 @@ function ShowTable () {
     // side-effect
     useEffect(() => {
         setLoading(true)
-        Axios.get(API_URL + `/users?_page=${page}&_limit=${5}`)
+        Axios.get(API_URL + `/students?_page=${page}&_limit=${5}`)
         .then((respond) => {
             if (!respond.data.length) {
                 setLastPage(true)
@@ -101,11 +101,11 @@ function ShowTable () {
         setConfirm(false)
         setLoading(true)
 
-        Axios.delete(API_URL + `/users/${id}`)
+        Axios.delete(API_URL + `/students/${id}`)
         .then((respond) => {
             console.log(respond.data)
 
-            Axios.get(API_URL + '/users?_page=1&_limit=5')
+            Axios.get(API_URL + '/students?_page=1&_limit=5')
             .then((respond2) => {
                 setStudent(respond2.data)
                 setLoading(false)
@@ -151,11 +151,11 @@ function ShowTable () {
         setCounty("")
         setProgram("")
 
-        Axios.put(API_URL + `/users/${editId}`, newEditedStudent)
+        Axios.put(API_URL + `/students/${editId}`, newEditedStudent)
         .then((respond) => {
             console.log(respond.data)
 
-            Axios.get(API_URL + '/users?_page=1&_limit=5')
+            Axios.get(API_URL + '/students?_page=1&_limit=5')
             .then((respond2) => {
                 setStudent(respond2.data)
                 setLoading(false)

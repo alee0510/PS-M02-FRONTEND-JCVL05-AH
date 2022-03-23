@@ -49,7 +49,7 @@ function StudentFormInput () {
         console.log(newStudent)
 
         setLoading(true)
-        Axios.post(API_URL + '/users', newStudent)
+        Axios.post(API_URL + '/students', newStudent)
         .then((respond) =>  {
             console.log("respond : ", respond.data)
 
@@ -76,7 +76,7 @@ function StudentFormInput () {
     }
 
     return (
-        <Box px="161px" py={35} w="40%" h="auto">
+        <Box px="161px" py={35} w="45%" h="auto">
             <Flex flexDirection="column">
                 <Text marginBottom="15px">Name</Text>
                 <Input ref={name} marginBottom="15px" type="text" placeholder='e.x. Firas Kun' />
