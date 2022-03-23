@@ -1,5 +1,5 @@
 {
-  "users": [
+  "students": [
     {
       "id": 1,
       "name": "Lia Kim",
@@ -20,20 +20,6 @@
       "email": "Seigou@gmail.co.kr",
       "program": "Data Science",
       "country": "Korea"
-    },
-    {
-      "id": 5,
-      "name": "Tiara Lauren",
-      "email": "tiara_l@gmail.com",
-      "program": "Fullstack Web Development",
-      "country": "USA"
-    },
-    {
-      "name": "Firas San",
-      "email": "san.firas@gmail.com",
-      "program": "Data Science",
-      "country": "Rusia",
-      "id": 6
     },
     {
       "name": "kaliber",
@@ -69,6 +55,21 @@
       "program": "Data Science",
       "country": "USA",
       "id": 11
+    },
+    {
+      "name": "Theo",
+      "email": "teho@gmail.com",
+      "program": "Fullstack Web Development",
+      "country": "Korea",
+      "id": 12
+    }
+  ],
+  "users" : [
+    {
+      "id" : 1,
+      "username" : "admin",
+      "password" : "admin123",
+      "email" : "admin@gmail.com"
     }
   ]
 }

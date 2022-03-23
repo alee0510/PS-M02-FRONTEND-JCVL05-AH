@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, AddIcon } from '@chakra-ui/icons'
 
+const API_URL = process.env.REACT_APP_API_URL
 function StudentFormInput () {
     const name = useRef("")
     const email = useRef("")
@@ -48,7 +49,7 @@ function StudentFormInput () {
         console.log(newStudent)
 
         setLoading(true)
-        Axios.post('http://localhost:2000/users', newStudent)
+        Axios.post(API_URL + '/users', newStudent)
         .then((respond) =>  {
             console.log("respond : ", respond.data)
 
@@ -75,7 +76,7 @@ function StudentFormInput () {
     }
 
     return (
-        <Box px="161px" py={35} w="50%" h="auto">
+        <Box px="161px" py={35} w="40%" h="auto">
             <Flex flexDirection="column">
                 <Text marginBottom="15px">Name</Text>
                 <Input ref={name} marginBottom="15px" type="text" placeholder='e.x. Firas Kun' />

@@ -18,6 +18,7 @@ import Loading from '../components/loading'
 import Confirmation from '../components/confirmation'
 import RowStudent, { RowStudentEdited } from './sub-components/row-students'
 
+const API_URL = process.env.REACT_APP_API_URL
 function ShowTable () {
     const [students, setStudent] = useState([])
     const [loading, setLoading] = useState(false)
@@ -26,6 +27,7 @@ function ShowTable () {
     const [id, setId] = useState(null)
     const [editId, setEditId] = useState(null)
     const [page, setPage] = useState(1)
+    const [lastPage, setLastPage] = useState(false)
 
     // edited state
     const inputNameRef = useRef('')
@@ -36,9 +38,13 @@ function ShowTable () {
     // side-effect
     useEffect(() => {
         setLoading(true)
-
-        Axios.get("http://localhost:2000/users")
+        Axios.get(API_URL + `/users?_page=${page}&_limit=${5}`)
         .then((respond) => {
+            if (!respond.data.length) {
+                setLastPage(true)
+            } else {
+                setLastPage(false)
+            }
             setStudent(respond.data)
             setLoading(false)
         })
@@ -46,11 +52,11 @@ function ShowTable () {
             console.log(error)
             setLoading(false)
         })
-    }, [])
+
+    }, [page])
 
     const generateStudentRows = () => {
-        let data = [...students]
-        return data.splice(5 * (page - 1), 5).map((student, index) => {
+        return students.map((student, index) => {
             if (student.id === editId) {
                 return (
                     <RowStudentEdited
@@ -95,11 +101,11 @@ function ShowTable () {
         setConfirm(false)
         setLoading(true)
 
-        Axios.delete(`http://localhost:2000/users/${id}`)
+        Axios.delete(API_URL + `/users/${id}`)
         .then((respond) => {
             console.log(respond.data)
 
-            Axios.get('http://localhost:2000/users')
+            Axios.get(API_URL + '/users?_page=1&_limit=5')
             .then((respond2) => {
                 setStudent(respond2.data)
                 setLoading(false)
@@ -145,11 +151,11 @@ function ShowTable () {
         setCounty("")
         setProgram("")
 
-        Axios.put(`http://localhost:2000/users/${editId}`, newEditedStudent)
+        Axios.put(API_URL + `/users/${editId}`, newEditedStudent)
         .then((respond) => {
             console.log(respond.data)
 
-            Axios.get('http://localhost:2000/users')
+            Axios.get(API_URL + '/users?_page=1&_limit=5')
             .then((respond2) => {
                 setStudent(respond2.data)
                 setLoading(false)
@@ -198,15 +204,24 @@ function ShowTable () {
                     { generateStudentRows() }
                 </Tbody>
             </Table>
-            <Flex backgroundColor="white" px="25px" alignItems="center" justifyContent="flex-end" w="100%" h="50px">
+            <Flex 
+                backgroundColor="white" 
+                px="25px" 
+                alignItems="center" 
+                justifyContent="flex-start" 
+                w="100%" 
+                h="50px"
+            >
                 <IconButton
                     icon={<ChevronLeftIcon />}
                     onClick={onButtonPrev}
+                    disabled={page <= 1}
                 />
                 <Text fontSize="16px" mx="15px">{page}</Text>
                 <IconButton
                     icon={<ChevronRightIcon />}
                     onClick={onButtonNext}
+                    disabled={lastPage}
                 />
             </Flex>
         </Box>
