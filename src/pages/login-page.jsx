@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import Axios from 'axios'
+import { useDispatch } from 'react-redux'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { Box, Flex, Text, Input, Button, Spinner, useToast } from '@chakra-ui/react'
 import { UnlockIcon } from '@chakra-ui/icons'
@@ -12,6 +13,7 @@ function LoginPage () {
 
     const toast = useToast()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const onButtonLogin = () => {
         setLoading(true)
@@ -32,6 +34,9 @@ function LoginPage () {
             // if success 
             // save token to localstorage
             localStorage.setItem("token", respond.data[0].id)
+
+            // save user data to global state
+            dispatch({ type : 'LOGIN', payload : respond.data[0] })
 
             // -> redirect to home page
             navigate('/')

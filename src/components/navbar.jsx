@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Box, Flex, Text, Button } from '@chakra-ui/react'
 import { UnlockIcon, LockIcon, ArrowBackIcon } from '@chakra-ui/icons'
@@ -12,6 +13,10 @@ function Navbar (props) {
 
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
+    
+    // global state
+    const { email } = useSelector((state) => state.user)
+    const dispatch =  useDispatch()
 
     const onButtonNavigate = () => {
         const location = props.pathname === '/login' ? '/' : '/login'
@@ -20,6 +25,7 @@ function Navbar (props) {
 
     const onButtonLogout = () => {
         localStorage.removeItem("token")
+        dispatch({ type : 'LOGOUT' })
     }
 
     return (
@@ -28,22 +34,25 @@ function Navbar (props) {
                 <Text fontSize={"5xl"} fontWeight="bold" color={"white"}>
                     { title[props.pathname] }
                 </Text>
-                {
-                    token ?
-                    <Button
-                        leftIcon={<LockIcon/>}
-                        onClick={onButtonLogout}
-                    >
-                        Logout
-                    </Button>
-                    :
-                    <Button 
-                        leftIcon={ props.pathname === '/login' ? <ArrowBackIcon/> : <UnlockIcon/> }
-                        onClick={onButtonNavigate}
-                    >
-                        { props.pathname === '/login' ? 'back' : 'login' }
-                    </Button>
-                }
+                <Flex alignItems="center">
+                    <Text fontSize="18px" mr="15px" color="white">{email}</Text>
+                    {
+                        token ?
+                        <Button
+                            leftIcon={<LockIcon/>}
+                            onClick={onButtonLogout}
+                        >
+                            Logout
+                        </Button>
+                        :
+                        <Button 
+                            leftIcon={ props.pathname === '/login' ? <ArrowBackIcon/> : <UnlockIcon/> }
+                            onClick={onButtonNavigate}
+                        >
+                            { props.pathname === '/login' ? 'back' : 'login' }
+                        </Button>
+                    }
+                </Flex>
             </Flex>
         </Box>
     )

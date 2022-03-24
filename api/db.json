@@ -12,7 +12,7 @@
       "name": "Beidu Chao",
       "email": "beido.chao@gmail.co.jp",
       "program": "Digital Marketing",
-      "country": "Japan"
+      "country": "USA"
     },
     {
       "id": 3,
@@ -22,39 +22,11 @@
       "country": "Korea"
     },
     {
-      "name": "kaliber",
-      "email": "kaliber@gmail.com",
-      "program": "Digital Marketing",
-      "country": "Korea",
-      "id": 7
-    },
-    {
-      "name": "hemo",
-      "email": "hemo@gmail.com",
-      "program": "UI/UX Designer",
-      "country": "Korea",
-      "id": 8
-    },
-    {
       "name": "Klee",
       "email": "klee@gmail.com",
       "program": "Data Science",
       "country": "Japan",
       "id": 9
-    },
-    {
-      "name": "jean",
-      "email": "jean.dan@gmail.com",
-      "program": "Digital Marketing",
-      "country": "USA",
-      "id": 10
-    },
-    {
-      "name": "Rudheus",
-      "email": "rude.us@gmail.com",
-      "program": "Data Science",
-      "country": "USA",
-      "id": 11
     },
     {
       "name": "Theo",
@@ -64,12 +36,12 @@
       "id": 12
     }
   ],
-  "users" : [
+  "users": [
     {
-      "id" : 1,
-      "username" : "admin",
-      "password" : "admin123",
-      "email" : "admin@gmail.com"
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "email": "admin@gmail.com"
     }
   ]
 }

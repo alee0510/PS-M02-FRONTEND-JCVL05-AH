@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
 import { 
     Box, 
     Table, 
@@ -13,21 +13,20 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
+// actions
+import { getStudentData, deleteStudent, editStudent } from '../redux/actions/student-actions'
+
 // components
 import Loading from '../components/loading'
 import Confirmation from '../components/confirmation'
 import RowStudent, { RowStudentEdited } from './sub-components/row-students'
 
-const API_URL = process.env.REACT_APP_API_URL
 function ShowTable () {
-    const [students, setStudent] = useState([])
-    const [loading, setLoading] = useState(false)
     const [confirm, setConfirm] = useState(false)
     const [editConfirm, setEditConfirm] = useState(false)
     const [id, setId] = useState(null)
     const [editId, setEditId] = useState(null)
     const [page, setPage] = useState(1)
-    const [lastPage, setLastPage] = useState(false)
 
     // edited state
     const inputNameRef = useRef('')
@@ -35,28 +34,20 @@ function ShowTable () {
     const [program, setProgram] = useState('')
     const [country, setCounty] = useState('')
 
-    // side-effect
-    useEffect(() => {
-        setLoading(true)
-        Axios.get(API_URL + `/students?_page=${page}&_limit=${5}`)
-        .then((respond) => {
-            if (!respond.data.length) {
-                setLastPage(true)
-            } else {
-                setLastPage(false)
-            }
-            setStudent(respond.data)
-            setLoading(false)
-        })
-        .catch((error) => {
-            console.log(error)
-            setLoading(false)
-        })
+    // redux
+    const dispatch = useDispatch()
+    const { data, loading } =  useSelector(state => {
+        return {
+            data : state.student.data,
+            loading : state.student.loading
+        }
+    })
 
-    }, [page])
+    // side-effect
+    useEffect(() => dispatch(getStudentData(page, 5)), [page])
 
     const generateStudentRows = () => {
-        return students.map((student, index) => {
+        return data.map((student, index) => {
             if (student.id === editId) {
                 return (
                     <RowStudentEdited
@@ -99,24 +90,8 @@ function ShowTable () {
 
     const onButtonConfirmDelete = () => {
         setConfirm(false)
-        setLoading(true)
-
-        Axios.delete(API_URL + `/students/${id}`)
-        .then((respond) => {
-            console.log(respond.data)
-
-            Axios.get(API_URL + '/students?_page=1&_limit=5')
-            .then((respond2) => {
-                setStudent(respond2.data)
-                setLoading(false)
-                setId(null)
-            })
-        })
-        .catch((error) => {
-            console.log(error)
-            setLoading(false)
-            setId(null)
-        })
+        dispatch(deleteStudent(id))
+        setId(null)
     }
 
     const onButtonEdit = (id, program, country) => {
@@ -146,25 +121,11 @@ function ShowTable () {
             country : country
         }
         setEditConfirm(false)
-        setLoading(true)
         setEditId(null)
         setCounty("")
         setProgram("")
 
-        Axios.put(API_URL + `/students/${editId}`, newEditedStudent)
-        .then((respond) => {
-            console.log(respond.data)
-
-            Axios.get(API_URL + '/students?_page=1&_limit=5')
-            .then((respond2) => {
-                setStudent(respond2.data)
-                setLoading(false)
-            })
-        })
-        .catch((error) => {
-            console.log(error)
-            setLoading(false)
-        })
+        dispatch(editStudent(editId, newEditedStudent))
     }
 
     const onButtonPrev = () => {
@@ -189,7 +150,7 @@ function ShowTable () {
                 onCancel={onButtonCancelEdit}
                 onConfirm={onButtonConfirmEdit}
             />
-            <Table variant="simple" minH="400px" backgroundColor={"white"}>
+            <Table variant="simple" backgroundColor={"white"}>
                 <Thead>
                     <Tr>
                         <Th>No</Th>
@@ -221,7 +182,7 @@ function ShowTable () {
                 <IconButton
                     icon={<ChevronRightIcon />}
                     onClick={onButtonNext}
-                    disabled={lastPage}
+                    disabled={!data.length}
                 />
             </Flex>
         </Box>
