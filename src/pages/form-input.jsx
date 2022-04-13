@@ -97,7 +97,7 @@ function StudentFormInput () {
                     </MenuList>
                 </Menu>
 
-                <Text marginBottom="15px">Counties</Text>
+                <Text marginBottom="15px">City</Text>
                 <Menu>
                     <MenuButton textAlign="left" as={Button} rightIcon={<ChevronDownIcon />}>
                         { country }

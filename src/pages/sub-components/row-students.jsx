@@ -7,10 +7,11 @@ export default function RowStudent ({ student, index, onDelete, onEdit }) {
     return (
         <Tr>
             <Td>{index + 1}</Td>
+            <Td>{student.studentId}</Td>
             <Td>{student.name}</Td>
             <Td>{student.email}</Td>
             <Td>{student.program}</Td>
-            <Td>{student.country}</Td>
+            <Td>{student.city}</Td>
             <Td>
                 <Menu>
                     <MenuButton as={IconButton} icon={<MdOutlineMoreVert />}/>
@@ -38,6 +39,7 @@ export function RowStudentEdited ({
     return (
         <Tr>
             <Td>#</Td>
+            <Td>{student.studentId}</Td>
             <Td>
                 <Input ref={nameRef} type="text" defaultValue={student.name}/>
             </Td>

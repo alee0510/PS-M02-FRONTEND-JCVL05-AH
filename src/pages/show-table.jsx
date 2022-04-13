@@ -36,10 +36,11 @@ function ShowTable () {
 
     // redux
     const dispatch = useDispatch()
-    const { data, loading } =  useSelector(state => {
+    const { data, loading, count } =  useSelector(state => {
         return {
             data : state.student.data,
-            loading : state.student.loading
+            loading : state.student.loading,
+            count : state.student.count
         }
     })
 
@@ -69,8 +70,8 @@ function ShowTable () {
                         key={student.id}
                         student={student}
                         index={index}
-                        onDelete={() => onButtonDelete(student.id)}
-                        onEdit={() => onButtonEdit(student.id, student.program, student.country)}
+                        onDelete={() => onButtonDelete(student.studentId)}
+                        onEdit={() => onButtonEdit(student.studentId, student.program, student.country)}
                     />
                 )
             }
@@ -154,10 +155,11 @@ function ShowTable () {
                 <Thead>
                     <Tr>
                         <Th>No</Th>
+                        <Th>Student-ID</Th>
                         <Th>Name</Th>
                         <Th>Email</Th>
                         <Th>Program</Th>
-                        <Th>Country</Th>
+                        <Th>City</Th>
                         <Th>Actions</Th>
                     </Tr>
                 </Thead>
@@ -182,7 +184,7 @@ function ShowTable () {
                 <IconButton
                     icon={<ChevronRightIcon />}
                     onClick={onButtonNext}
-                    disabled={!data.length}
+                    disabled={page >= Math.ceil(count / 5)}
                 />
             </Flex>
         </Box>
