@@ -15,9 +15,10 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, AddIcon } from '@chakra-ui/icons'
 
-// controllers
+// actions
 import { getProgram } from '../redux/actions/program-actions'
 import { getCity } from '../redux/actions/city-actions'
+import { postStudentData } from '../redux/actions/student-actions'
 
 function StudentFormInput () {
     const name = useRef("")
@@ -39,51 +40,51 @@ function StudentFormInput () {
     })
 
     // event
-    // const onButtonSubmit = () => {
-    //     // input validation
-    //     if (name.current.value === "" || email.current.value === "") {
-    //         return toast({
-    //             title: 'Warning.',
-    //             description: "Name and email cannot be empty.",
-    //             status: 'warning',
-    //             duration: 3000,
-    //             isClosable: true,
-    //         })
-    //     }
+    const onButtonSubmit = async () => {
+        // input validation
+        if (name.current.value === "" || email.current.value === "") {
+            return toast({
+                title: 'Warning.',
+                description: "Name and email cannot be empty.",
+                status: 'warning',
+                duration: 3000,
+                isClosable: true,
+            })
+        }
 
-    //     const newStudent = {
-    //         name : name.current.value,
-    //         email : email.current.value,
-    //         program : program,
-    //         country : country
-    //     }
-    //     console.log(newStudent)
+        const newStudent = {
+            name : name.current.value,
+            email : email.current.value,
+            programId : programs[programIdx].id,
+            cityId : cities[cityIdx].id
+        }
+        console.log(newStudent)
 
-    //     setLoading(true)
-    //     Axios.post(API_URL + '/students', newStudent)
-    //     .then((respond) =>  {
-    //         console.log("respond : ", respond.data)
+        const [ success, error ] = await dispatch(postStudentData(newStudent))
+        if (!success) {
+            return toast({
+                title: 'Error',
+                description: error.message,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+        }
 
-    //         // reset state
-    //         setCountry("Japan")
-    //         name.current.value = ""
-    //         email.current.value = ""
-
-    //         setLoading(false)
-
-    //         return toast({
-    //             title: 'Info',
-    //             description: "New data has been added.",
-    //             status: 'success',
-    //             duration: 3000,
-    //             isClosable: true,
-    //         })
-    //     })
-    //     .catch((error) => {
-    //         console.log(error)
-    //         setLoading(false)
-    //     })
-    // }
+        // clear state
+        setProgramIdx(null)
+        setCiyyIdx(null)
+        name.current.value = ''
+        email.current.value = ''
+        
+        return toast({
+            title: 'Info',
+            description: "New data has been added.",
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        })
+    }
 
     // side-effect
     useEffect(() => {
@@ -136,7 +137,7 @@ function StudentFormInput () {
                         { programIdx ? programs[programIdx].program : 'Programs' }
                     </MenuButton>
                     <MenuList>
-                        {generateProgramList()}
+                        { generateProgramList() }
                     </MenuList>
                 </Menu>
 
@@ -156,6 +157,7 @@ function StudentFormInput () {
                 leftIcon={ loading ? <Spinner size="md"/> : <AddIcon/>} 
                 colorScheme='teal' 
                 variant='solid'
+                onClick={onButtonSubmit}
                 disabled={loading}
             >
                 { loading ? "Loading..." : "Submit" }
