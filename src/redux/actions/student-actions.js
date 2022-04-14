@@ -81,3 +81,14 @@ export const sortStudentData = (type = 'asc') => {
         })
     }
 }
+
+// post data
+export const postStudentData = (body) => {
+    return async (dispatch) => {
+        try {
+
+        } catch (error) {
+            
+        }
+    }
+}

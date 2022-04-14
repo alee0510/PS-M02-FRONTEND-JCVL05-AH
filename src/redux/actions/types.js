@@ -8,3 +8,13 @@ export const ON_END = 'ON_END'
 export const ON_FETCH_START = 'ON_FETCH_START'
 export const ON_FETCH_END = 'ON_FETCH_END'
 export const GET_STUDENT_DATA = 'GET_STUDENT_DATA'
+
+// PROGRAMS
+export const GET_PROGRAM_START = 'GET_PROGRAM_START'
+export const GET_PROGRAM_END = 'GET_PROGRAM_END'
+export const GET_PROGRAM = 'GET_PROGRAM'
+
+// CITY
+export const GET_CITY_START = 'GET_CITY_START'
+export const GET_CITY_END = 'GET_CITY_END'
+export const GET_CITY = 'GET_CITY'

@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import Axios from 'axios'
+import React, { useRef, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { 
     Box, 
     Text, 
@@ -15,63 +15,109 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, AddIcon } from '@chakra-ui/icons'
 
-const API_URL = process.env.REACT_APP_API_URL
+// controllers
+import { getProgram } from '../redux/actions/program-actions'
+import { getCity } from '../redux/actions/city-actions'
+
 function StudentFormInput () {
     const name = useRef("")
     const email = useRef("")
-    const [program, setProgram] = useState("Fullstack Web Development")
-    const [country, setCountry] = useState("Japan")
-    const [loading, setLoading] = useState(false)
+    const [programIdx, setProgramIdx] = useState(null)
+    const [cityIdx, setCiyyIdx] = useState(null)
 
+    // initialize
     const toast = useToast()
+    const dispatch = useDispatch()
+
+    // global state
+    const { programs, cities, loading } = useSelector((state) => {
+        return {
+            programs : state.program.data,
+            cities : state.city.data,
+            loading : state.program.loading
+        }
+    })
 
     // event
-    const onProgramClick = (event) => setProgram(event.target.value)
-    const onCountryClick = (event) => setCountry(event.target.value)
-    const onButtonSubmit = () => {
-        // input validation
-        if (name.current.value === "" || email.current.value === "") {
-            return toast({
-                title: 'Warning.',
-                description: "Name and email cannot be empty.",
-                status: 'warning',
-                duration: 3000,
-                isClosable: true,
-            })
-        }
+    // const onButtonSubmit = () => {
+    //     // input validation
+    //     if (name.current.value === "" || email.current.value === "") {
+    //         return toast({
+    //             title: 'Warning.',
+    //             description: "Name and email cannot be empty.",
+    //             status: 'warning',
+    //             duration: 3000,
+    //             isClosable: true,
+    //         })
+    //     }
 
-        const newStudent = {
-            name : name.current.value,
-            email : email.current.value,
-            program : program,
-            country : country
-        }
-        console.log(newStudent)
+    //     const newStudent = {
+    //         name : name.current.value,
+    //         email : email.current.value,
+    //         program : program,
+    //         country : country
+    //     }
+    //     console.log(newStudent)
 
-        setLoading(true)
-        Axios.post(API_URL + '/students', newStudent)
-        .then((respond) =>  {
-            console.log("respond : ", respond.data)
+    //     setLoading(true)
+    //     Axios.post(API_URL + '/students', newStudent)
+    //     .then((respond) =>  {
+    //         console.log("respond : ", respond.data)
 
-            // reset state
-            setProgram("Fullstack Web Development")
-            setCountry("Japan")
-            name.current.value = ""
-            email.current.value = ""
+    //         // reset state
+    //         setCountry("Japan")
+    //         name.current.value = ""
+    //         email.current.value = ""
 
-            setLoading(false)
+    //         setLoading(false)
 
-            return toast({
-                title: 'Info',
-                description: "New data has been added.",
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
-            })
+    //         return toast({
+    //             title: 'Info',
+    //             description: "New data has been added.",
+    //             status: 'success',
+    //             duration: 3000,
+    //             isClosable: true,
+    //         })
+    //     })
+    //     .catch((error) => {
+    //         console.log(error)
+    //         setLoading(false)
+    //     })
+    // }
+
+    // side-effect
+    useEffect(() => {
+        dispatch(getProgram())
+        dispatch(getCity())
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    // generate dropdown list
+    const generateProgramList = () => {
+        return programs.map((program, index) => {
+            return (
+                <MenuItem 
+                    key={program.id}
+                    value={program.program} 
+                    onClick={() => setProgramIdx(index)}
+                >
+                    {program.program}
+                </MenuItem>
+            )
         })
-        .catch((error) => {
-            console.log(error)
-            setLoading(false)
+    }
+    const generateCityList = () => {
+        return cities.map((city, index) => {
+            return (
+                <MenuItem 
+                    key={city.id}
+                    value={city.city} 
+                    onClick={() => setCiyyIdx(index)}
+                >
+                    {city.city}
+                </MenuItem>
+            )
         })
     }
 
@@ -87,26 +133,20 @@ function StudentFormInput () {
                 <Text marginBottom="15px">Programs</Text>
                 <Menu>
                     <MenuButton marginBottom="15px" textAlign="left" as={Button} rightIcon={<ChevronDownIcon />}>
-                        { program }
+                        { programIdx ? programs[programIdx].program : 'Programs' }
                     </MenuButton>
                     <MenuList>
-                        <MenuItem value="Fullstack Web Development" onClick={onProgramClick}>Fullstack Web Development</MenuItem>
-                        <MenuItem value="Data Science" onClick={onProgramClick}>Data Science</MenuItem>
-                        <MenuItem value="UI/UX Designer" onClick={onProgramClick}>UI/UX Designer</MenuItem>
-                        <MenuItem value="Digital Marketing" onClick={onProgramClick}>Digital Marketing</MenuItem>
+                        {generateProgramList()}
                     </MenuList>
                 </Menu>
 
                 <Text marginBottom="15px">City</Text>
                 <Menu>
                     <MenuButton textAlign="left" as={Button} rightIcon={<ChevronDownIcon />}>
-                        { country }
+                        {cityIdx ? cities[cityIdx].city : 'City' }
                     </MenuButton>
                     <MenuList>
-                        <MenuItem value="Japan" onClick={onCountryClick}>Japan</MenuItem>
-                        <MenuItem value="Korea" onClick={onCountryClick}>Korea</MenuItem>
-                        <MenuItem value="USA" onClick={onCountryClick}>USA</MenuItem>
-                        <MenuItem value="Rusia" onClick={onCountryClick}>Rusia</MenuItem>
+                        { generateCityList() }
                     </MenuList>
                 </Menu>
             </Flex>
@@ -116,7 +156,6 @@ function StudentFormInput () {
                 leftIcon={ loading ? <Spinner size="md"/> : <AddIcon/>} 
                 colorScheme='teal' 
                 variant='solid'
-                onClick={onButtonSubmit}
                 disabled={loading}
             >
                 { loading ? "Loading..." : "Submit" }
