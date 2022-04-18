@@ -9,7 +9,8 @@ import {
     Tr,
     IconButton,
     Flex,
-    Text
+    Text, 
+    useToast
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
@@ -34,7 +35,8 @@ function ShowTable () {
     const [program, setProgram] = useState('')
     const [country, setCounty] = useState('')
 
-    // redux
+    // redux & other
+    const toast = useToast()
     const dispatch = useDispatch()
     const { data, loading, count } =  useSelector(state => {
         return {
@@ -45,11 +47,15 @@ function ShowTable () {
     })
 
     // side-effect
-    useEffect(() => dispatch(getStudentData(page, 5)), [page])
+    useEffect(() => {
+        dispatch(getStudentData(page, 5))
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page])
 
     const generateStudentRows = () => {
         return data.map((student, index) => {
-            if (student.id === editId) {
+            if (student.studentId === editId) {
                 return (
                     <RowStudentEdited
                         key={student.id} 
@@ -69,7 +75,6 @@ function ShowTable () {
                     <RowStudent
                         key={student.id}
                         student={student}
-                        index={index}
                         onDelete={() => onButtonDelete(student.studentId)}
                         onEdit={() => onButtonEdit(student.studentId, student.program, student.country)}
                     />
@@ -89,10 +94,29 @@ function ShowTable () {
         setId(null)
     }
 
-    const onButtonConfirmDelete = () => {
+    const onButtonConfirmDelete = async () => {
         setConfirm(false)
-        dispatch(deleteStudent(id))
+
+        const [ SUCCESS, message ] = await dispatch(deleteStudent(id, page, 5))
         setId(null)
+
+        // if succes -> toast succes
+        if (SUCCESS) return toast({
+            title : 'Info',
+            description : 'student has been deleted.',
+            status : 'success',
+            isClosable : true,
+            duration : 3000
+        })
+        // if error -> toast error
+        return toast({
+            title : 'Error',
+            description : message,
+            status : 'error',
+            isClosable : true,
+            duration : 3000
+        })
+        
     }
 
     const onButtonEdit = (id, program, country) => {
@@ -154,7 +178,7 @@ function ShowTable () {
             <Table variant="simple" backgroundColor={"white"}>
                 <Thead>
                     <Tr>
-                        <Th>No</Th>
+                        <Th>Index</Th>
                         <Th>Student-ID</Th>
                         <Th>Name</Th>
                         <Th>Email</Th>

@@ -3,10 +3,10 @@ import { Tr, Td, Menu, MenuButton, MenuList, MenuItem, IconButton, Input, Button
 import { ChevronDownIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { MdOutlineMoreVert, MdEdit, MdDelete } from 'react-icons/md'
 
-export default function RowStudent ({ student, index, onDelete, onEdit }) {
+export default function RowStudent ({ student, onDelete, onEdit }) {
     return (
         <Tr>
-            <Td>{index + 1}</Td>
+            <Td>{student.id}</Td>
             <Td>{student.studentId}</Td>
             <Td>{student.name}</Td>
             <Td>{student.email}</Td>
