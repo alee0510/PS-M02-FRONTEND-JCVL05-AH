@@ -2,7 +2,7 @@ import { GET_STUDENT_DATA, GET_STUDENT_DATA_START, GET_STUDENT_DATA_END } from '
 
 const INITIAL_STATE = {
     data : [],
-    count : 0,
+    count : 0, // total data
     loading : false
 }
 
