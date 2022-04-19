@@ -78,6 +78,19 @@ export const sortStudentData = (type = 'asc') => {
 // post data
 export const postStudentData = (body) => {
     return async (dispatch) => {
-        
+        try {
+            dispatch({ type : GET_STUDENT_DATA_START })
+
+            // AJAX request : POST
+            await Axios.post(API_URL + '/students', body)
+            
+            dispatch({ type : GET_STUDENT_DATA_END })
+
+            return [true, '']
+        } catch (error) {
+            console.log('error :', error)
+            dispatch({ type : GET_STUDENT_DATA_END })
+            return [false, error.response ? error.response.data : error]
+        }
     }
 }

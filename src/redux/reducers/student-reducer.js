@@ -13,7 +13,11 @@ function studentReducer (state = INITIAL_STATE, action) {
         case GET_STUDENT_DATA_END :
             return { ...state, loading : false }
         case GET_STUDENT_DATA :
-            return { ...state, data : action.payload.data, count : action.payload.count }
+            return { 
+                ...state, 
+                data : action.payload.data, 
+                count : action.payload.count 
+            }
         default :
             return state
     }
